@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #010304;
+  --fg: #ffffff;
+  --muted: rgba(255, 255, 255, 0.6);
+  --border: rgba(255, 255, 255, 0.10);
+  --accent-blue: #0D99FF;
+  --accent-purple: #A259FF;
+  --accent-orange: #F24E1E;
+  --accent-cyan: #26DDF9;
+  --accent-green: #0ACF83;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Outfit', sans-serif;
+}
+
+::selection {
+  background: rgba(38, 221, 249, 0.3);
+  color: #fff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes twBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.tw-cursor {
+  display: inline-block;
+  width: 4px;
+  height: 1em;
+  margin-left: 2px;
+  background: #ffffff;
+  vertical-align: -0.15em;
+  animation: twBlink 1s steps(1, end) infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.3); }
+}
+
+@keyframes rotate-once {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(45deg); }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.animate-rotate-once {
+  animation: rotate-once 1s ease-out 1 forwards;
+}
+
+@keyframes blur-in-vertical {
+  from {
+    opacity: 0;
+    filter: blur(16px);
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+.animate-blur-in-vertical {
+  animation: blur-in-vertical 0.8s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .pulse-dot { animation: none; }
+  .tw-cursor { animation: none; }
+  .animate-blur-in-vertical { animation: none; opacity: 1; filter: none; transform: none; }
+}
