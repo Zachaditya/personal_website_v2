@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Download, GraduationCap } from "lucide-react";
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 
 type ResumeItem = {
   title: string;
@@ -181,28 +181,8 @@ function TimelineSection({
 }
 
 export function Experience() {
-  const gifRef = useRef<HTMLImageElement>(null);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (gifRef.current) {
-        gifRef.current.src = `/bongo_cat.gif?t=${Date.now()}`;
-      }
-    }, 900);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section id="experience" className="relative px-5 py-20">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        ref={gifRef}
-        src="/bongo_cat.gif"
-        alt="Bongo cat"
-        className="absolute top-0 right-8 w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 object-contain rotate-[-10deg] pointer-events-none"
-        aria-hidden
-      />
-
       <div className="mx-auto max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
