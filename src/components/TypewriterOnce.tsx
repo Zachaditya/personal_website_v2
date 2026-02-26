@@ -1,21 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useInView } from "framer-motion";
 
 export default function TypewriterOnce({
   text,
-  ms = 24,
-  delayMs = 600,
+  ms = 100,
+  delayMs = 400,
   className,
+  triggerOnScroll = false,
 }: {
   text: string;
   ms?: number; // typing speed (lower = faster)
   delayMs?: number; // delay before typing starts
   className?: string;
+  triggerOnScroll?: boolean; // when true, only start typing when scrolled into view
 }) {
   const [out, setOut] = useState("");
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const shouldStart = !triggerOnScroll || isInView;
 
   useEffect(() => {
+    if (!shouldStart) return;
+
     // Respect reduced motion: show immediately, no animation
     const reduced =
       typeof window !== "undefined" &&
@@ -44,10 +52,10 @@ export default function TypewriterOnce({
       if (timeoutId) window.clearTimeout(timeoutId);
       if (intervalId) window.clearInterval(intervalId);
     };
-  }, [text, ms, delayMs]);
+  }, [text, ms, delayMs, shouldStart]);
 
   return (
-    <span className={className}>
+    <span ref={ref} className={className}>
       <span>{out}</span>
       {/* Blinking cursor - use text-white when parent has text-transparent for visibility */}
       <span className="tw-cursor" aria-hidden="true" />

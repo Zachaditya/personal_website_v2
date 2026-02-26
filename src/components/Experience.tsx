@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import TypewriterOnce from "./TypewriterOnce";
 import { Download, GraduationCap } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -102,14 +103,9 @@ function TimelineCard({ item, index }: { item: ResumeItem; index: number }) {
         isLeft ? "md:justify-start" : "md:justify-end"
       }`}
     >
-      {/* Connection dot on timeline */}
-      <div className="absolute left-1/2 top-6 hidden h-3 w-3 -translate-x-1/2 rounded-full border-2 border-[#A259FF] bg-[#010304] md:block" />
-
       <div className="w-full md:w-[calc(50%-2rem)]">
         <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-5">
-          <div className="font-['Fira_Code'] text-xs text-[#A259FF]">
-            {item.dates}
-          </div>
+          <div className="text-xs text-white">{item.dates}</div>
           <h3 className="mt-2 text-base font-semibold text-white">
             {item.title}
           </h3>
@@ -168,7 +164,7 @@ function TimelineSection({
       </h3>
       <div className="relative">
         {/* Vertical line */}
-        <div className="absolute left-1/2 top-0 bottom-0 hidden w-px -translate-x-1/2 bg-white/10 md:block" />
+        <div className="absolute left-1/2 top-0 bottom-0 hidden w-1 -translate-x-1/2 bg-white/80 md:block" />
 
         <div className="space-y-6">
           {items.map((item, i) => (
@@ -192,11 +188,12 @@ export function Experience() {
           className="text-center"
         >
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Experience
+            <TypewriterOnce
+              text="Experience and Education"
+              ms={100}
+              triggerOnScroll
+            />
           </h2>
-          <p className="mt-2 text-white/60">
-            My professional journey and education
-          </p>
         </motion.div>
 
         {/* Download resume */}

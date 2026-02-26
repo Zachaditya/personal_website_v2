@@ -10,13 +10,17 @@ export function Hero() {
   const techStackControls = useAnimation();
 
   useEffect(() => {
-    techStackControls.set({ filter: "blur(120px) brightness(1.5)", opacity: 0, scale: 0.95 });
+    techStackControls.set({
+      filter: "blur(120px) brightness(1.5)",
+      opacity: 0,
+      scale: 0.95,
+    });
     const sequence = async () => {
       await techStackControls.start({
         filter: "blur(0px) brightness(1)",
         opacity: 0.85,
         scale: 1,
-        transition: { duration: 2, ease: "easeOut" },
+        transition: { duration: 2.2, ease: "easeOut", delay: 1 },
       });
       techStackControls.start({
         y: [0, -18, 0],
@@ -29,14 +33,28 @@ export function Hero() {
   }, [techStackControls]);
 
   return (
-    <section className="relative min-h-screen flex items-center px-5 md:px-12 lg:px-20">
-      <div className="flex w-full items-center justify-between gap-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="flex-1 flex flex-col items-start justify-center text-left min-w-0"
-        >
+    <section
+      className="shoot-star-root relative min-h-screen overflow-hidden flex items-center pl-5 md:pl-12 lg:pl-20"
+      style={{ "--shoot-d": "1300ms" } as React.CSSProperties}
+    >
+      {/* Shooting star — visual only, no content */}
+      <div
+        className="shoot-star pointer-events-none z-20"
+        style={
+          {
+            "--shoot-top": "100px",
+            "--shoot-left": "1.25rem",
+            "--shoot-dx": "80px",
+            "--shoot-dy": "240px",
+          } as React.CSSProperties
+        }
+      >
+        <div className="star" />
+        <div className="spark" aria-hidden="true" />
+      </div>
+
+      {/* Hero content — left side, revealed by star burst */}
+      <div className="shoot-payload relative z-10 w-full max-w-xl lg:max-w-[50%] pr-5 md:pr-12">
         {/* Availability badge */}
         <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl px-4 py-2 text-xs text-white/70">
           <span className="pulse-dot h-2 w-2 rounded-full bg-[#0ACF83]" />
@@ -52,7 +70,7 @@ export function Hero() {
           <TypewriterOnce
             text="Ernest Zachary Aditya"
             ms={70}
-            delayMs={800}
+            delayMs={2600}
             className="bg-white bg-clip-text text-transparent"
           />
         </h1>
@@ -103,17 +121,24 @@ export function Hero() {
             <Download className="h-4 w-4" />
           </a>
         </div>
-      </motion.div>
+      </div>
+
+      {/* Tech stack image — absolute panel, flush to right edge, full section height */}
+      <div className="hidden lg:flex absolute right-0 top-0 bottom-0 w-[45%] items-center justify-center pointer-events-none">
         <motion.div
-          className="hidden lg:block flex-shrink-0 w-80 xl:w-[420px] ml-auto"
+          initial={{
+            opacity: 0,
+            filter: "blur(120px) brightness(1.5)",
+            scale: 0.95,
+          }}
           animate={techStackControls}
         >
           <Image
             src="/tech-stack.png"
             alt=""
-            width={420}
-            height={420}
-            className="w-full h-auto rounded-lg"
+            width={600}
+            height={600}
+            className="max-h-[55vh] w-auto"
             unoptimized
           />
         </motion.div>

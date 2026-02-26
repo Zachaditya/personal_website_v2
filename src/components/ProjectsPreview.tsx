@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import TypewriterOnce from "./TypewriterOnce";
 import { PROJECTS } from "@/lib/projects";
 import { ArrowRight } from "lucide-react";
 
@@ -35,7 +36,7 @@ const sorted = [...PROJECTS].sort(
 
 export function ProjectsPreview() {
   return (
-    <section id="projects" className="px-5 py-20">
+    <section id="projects" className="relative z-10 mt-80 px-5 py-20">
       <div className="mx-auto max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -44,15 +45,15 @@ export function ProjectsPreview() {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Projects
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-white">
+            <TypewriterOnce text="Projects" ms={100} triggerOnScroll />
           </h2>
           <p className="mt-2 text-white/60">
             Things I&apos;ve built and shipped
           </p>
         </motion.div>
 
-        <div className="mt-10 grid gap-4">
+        <div className="mt-10 grid grid-cols-2 gap-15">
           {sorted.map((p, i) => (
             <motion.article
               key={p.slug}
@@ -60,10 +61,11 @@ export function ProjectsPreview() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-30px" }}
               transition={{ duration: 0.4, delay: i * 0.05 }}
-              className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-5 transition-colors hover:bg-white/[0.08]"
+              className="flex flex-col rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 transition-colors hover:bg-white/[0.08]"
             >
-              <div className="flex items-center gap-3">
-                <span className="font-['Fira_Code'] text-xs text-white/40">
+              {/* Status badges */}
+              <div className="flex items-center gap-2">
+                <span className="font-['Fira_Code'] text-[10px] text-white/40">
                   {p.date}
                 </span>
                 {p.liveUrl && (
@@ -71,34 +73,34 @@ export function ProjectsPreview() {
                     href={p.liveUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-[#0ACF83]/30 bg-[#0ACF83]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#0ACF83]"
+                    className="inline-flex items-center gap-1 rounded-full border border-[#0ACF83]/30 bg-[#0ACF83]/10 px-2 py-0.5 text-[10px] font-medium text-[#0ACF83]"
                   >
                     <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[#0ACF83]" />
                     Live
                   </a>
                 )}
                 {!p.liveUrl && p.wip && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 px-2.5 py-0.5 text-[11px] font-medium text-amber-400">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] font-medium text-amber-400">
                     <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
                     In Progress
                   </span>
                 )}
               </div>
 
-              <h3 className="mt-3 text-lg font-semibold tracking-tight text-white">
+              <h3 className="mt-2 text-sm font-semibold tracking-tight text-white">
                 {p.title}
               </h3>
 
-              <p className="mt-2 text-sm leading-relaxed text-white/60">
+              <p className="mt-1.5 text-xs leading-relaxed text-white/55 line-clamp-2">
                 {p.short ?? p.overview ?? ""}
               </p>
 
               {/* Tags */}
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {p.tags.slice(0, 5).map((t) => (
+              <div className="mt-2.5 flex flex-wrap gap-1">
+                {p.tags.slice(0, 3).map((t) => (
                   <span
                     key={`${p.slug}-${t}`}
-                    className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[10px] text-white/50"
+                    className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[9px] text-white/50"
                   >
                     {t}
                   </span>
@@ -106,22 +108,22 @@ export function ProjectsPreview() {
               </div>
 
               {/* Actions */}
-              <div className="mt-4 flex flex-wrap items-center gap-3">
+              <div className="mt-auto pt-3 flex items-center gap-2">
                 <Link
                   href={`/projects/${p.slug}`}
-                  className="group inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/20"
+                  className="group inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-white/20"
                 >
                   Read more
-                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                  <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                 </Link>
                 {p.repoUrl && (
                   <a
                     href={p.repoUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center rounded-full border border-white/10 px-4 py-2 text-sm text-white/60 transition-colors hover:text-white/90"
+                    className="inline-flex items-center rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/60 transition-colors hover:text-white/90"
                   >
-                    View repo
+                    Repo
                   </a>
                 )}
               </div>

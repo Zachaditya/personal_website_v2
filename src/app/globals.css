@@ -87,3 +87,129 @@ html {
   .tw-cursor { animation: none; }
   .animate-blur-in-vertical { animation: none; opacity: 1; filter: none; transform: none; }
 }
+
+/* ====== Shooting star animation ====== */
+.shoot-star-root {
+  --shoot-t: 1600ms;
+  --shoot-impact: 1200ms;
+  /* --shoot-d is set via inline style on the root element so it cascades to
+     both .shoot-star (the visual) and .shoot-payload (the content reveal) */
+}
+
+.shoot-star {
+  position: absolute;
+  top: var(--shoot-top, 120px);
+  left: var(--shoot-left, 80px);
+}
+
+.shoot-star .star {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(-45deg, #ffffff, rgba(255, 255, 255, 0));
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
+  animation:
+    shoot-tail var(--shoot-t) ease-in-out 1 both,
+    shoot-shooting var(--shoot-t) ease-in-out 1 both;
+  animation-delay: var(--shoot-d, 0ms);
+}
+
+.shoot-star .star::before,
+.shoot-star .star::after {
+  position: absolute;
+  content: '';
+  right: 0;
+  height: 2px;
+  background: linear-gradient(-45deg, rgba(255, 255, 255, 0), #ffffff, rgba(255, 255, 255, 0));
+  border-radius: 100%;
+  transform: translateX(50%) rotateZ(45deg);
+  animation: shoot-shining var(--shoot-t) ease-in-out 1 both;
+  animation-delay: var(--shoot-d, 0ms);
+}
+
+.shoot-star .star::after {
+  transform: translateX(50%) rotateZ(-45deg);
+}
+
+.shoot-star .spark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  background: #ffffff;
+  filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.9));
+  opacity: 0;
+  transform: translate(var(--shoot-dx), var(--shoot-dy)) scale(0);
+  clip-path: polygon(
+    50%   0%,
+    62%  38%,
+    100% 50%,
+    62%  62%,
+    50% 100%,
+    38%  62%,
+    0%   50%,
+    38%  38%
+  );
+  animation: shoot-spark-pop var(--shoot-t) ease-in-out 1 both;
+  animation-delay: var(--shoot-d, 0ms);
+}
+
+@keyframes shoot-spark-pop {
+  0%, 72% { opacity: 0; transform: translate(var(--shoot-dx), var(--shoot-dy)) scale(0); }
+  74% { opacity: 1; transform: translate(var(--shoot-dx), var(--shoot-dy)) scale(0.6); }
+  77% { opacity: 1; transform: translate(var(--shoot-dx), var(--shoot-dy)) scale(1.8); }
+  86% { opacity: 0; transform: translate(var(--shoot-dx), var(--shoot-dy)) scale(14); }
+  100% { opacity: 0; transform: translate(var(--shoot-dx), var(--shoot-dy)) scale(14); }
+}
+
+.shoot-payload {
+  /* Revealed in place using the shared blur-in-vertical keyframe,
+     delayed to match the shooting star's impact moment */
+  opacity: 0;
+  animation: blur-in-vertical 0.8s ease-out forwards;
+  animation-delay: calc(var(--shoot-d, 0ms) + var(--shoot-impact));
+}
+
+@keyframes shoot-tail {
+  0% { width: 0; }
+  30% { width: 70px; }
+  100% { width: 0; }
+}
+
+@keyframes shoot-shining {
+  0% { width: 0; }
+  30% { width: 20px; }
+  31% { width: 0; }
+  32% { width: 10px; }
+  42% { width: 20px; }
+  49% { width: 26px; }
+  50% { width: 0; }
+  51% { width: 10px; }
+  58% { width: 20px; }
+  62% { width: 24px; }
+  70% { width: 20px; }
+  100% { width: 0; }
+}
+
+@keyframes shoot-shooting {
+  0% { transform: translate(0, 0) rotate(45deg); }
+  100% { transform: translate(var(--shoot-dx), var(--shoot-dy)) rotate(45deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shoot-star .star,
+  .shoot-star .spark,
+  .shoot-payload {
+    animation: none !important;
+  }
+  .shoot-payload {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+  .shoot-star .spark {
+    display: none;
+  }
+}
