@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import TypewriterOnce from "./TypewriterOnce";
@@ -73,8 +74,20 @@ export function ProjectsPreview() {
                   router.push(`/projects/${p.slug}`);
                 }
               }}
-              className="flex cursor-pointer flex-col rounded-2xl border border-white/10 bg-[#0c0e10] p-4 transition-colors hover:bg-[#111315]"
+              className="flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0c0e10] transition-colors hover:bg-[#111315]"
             >
+              {p.preview && (
+                <div className="relative h-28 w-full shrink-0 overflow-hidden bg-white/5 sm:h-32">
+                  <Image
+                    src={`/previews/${p.preview}`}
+                    alt=""
+                    fill
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                    className="object-cover object-top"
+                  />
+                </div>
+              )}
+              <div className="flex flex-1 flex-col p-4">
               {/* Top row: date + status badges inline — no absolute positioning so nothing overlaps */}
               <div className="flex items-start justify-between gap-2">
                 <span className="text-sm text-white/40 shrink-0">{p.date}</span>
@@ -147,6 +160,7 @@ export function ProjectsPreview() {
                     Repo
                   </a>
                 )}
+              </div>
               </div>
             </motion.article>
           ))}

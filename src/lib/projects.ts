@@ -10,6 +10,7 @@ export type Project = {
   wip?: boolean;
   brewing?: boolean;
   liveUrl?: string;
+  preview?: string; // path in public/previews, e.g. "portfolio_dashboard-preview.png"
 };
 
 export const PROJECTS: Project[] = [
@@ -32,6 +33,7 @@ export const PROJECTS: Project[] = [
     repoUrl: "https://github.com/Zachaditya/personal_finance_dashboard",
     liveUrl: "https://personal-finance-dashboard-three-brown.vercel.app",
     brewing: true,
+    preview: "portfolio_dashboard-preview.png",
   },
   {
     slug: "hm-shop",
@@ -51,6 +53,7 @@ The standout feature is an AI shopping assistant embedded in the site. Instead o
     ],
     repoUrl: "https://github.com/Zachaditya/eshop-hm_dataset",
     liveUrl: "https://eshop-hm-dataset.vercel.app",
+    preview: "ecom-preview.png",
   },
   {
     slug: "internal-dacs-tool",
@@ -72,6 +75,7 @@ The standout feature is an AI shopping assistant embedded in the site. Instead o
     ],
     repoUrl: "https://github.com/Zachaditya/DACS_viz",
     liveUrl: "https://dacsviz-production.up.railway.app",
+    preview: "dacs_viz-preview.png",
   },
   {
     slug: "dacs",
@@ -93,6 +97,7 @@ I focused on making the system practical for real-world decisioning: clear featu
       "Produced interpretable outputs to support underwriting decisions and risk parameter setting for collateralization",
     ],
     repoUrl: "https://github.com/Zachaditya/Digital-Asset-Credit-Score-Wallet-Level-Risk-Modeling",
+    preview: "dacs-preview.png",
   },
   {
     slug: "spotify",
@@ -112,6 +117,7 @@ On the product side, I focused on making the workflow feel real: fast search, cl
     ],
     repoUrl: "https://github.com/Zachaditya/playlist_recommender",
     liveUrl: "https://playlistrecommender-production.up.railway.app",
+    preview: "spotify-preview.png",
   },
   {
     slug: "tableau",
@@ -130,6 +136,7 @@ To keep the analysis reliable and scalable, I used SQL to clean and transform th
       "Added usability features like tooltips and cross-highlighting to quickly identify drivers behind performance changes",
     ],
     repoUrl: "https://github.com/Zachaditya/Tableau_salesDashboard",
+    preview: "tableau-preview.png",
   },
   {
     slug: "sp500",
@@ -148,5 +155,6 @@ The emphasis was on creating a realistic evaluation loop rather than just fittin
       "Evaluated performance using precision-focused metrics and baseline comparisons to assess practical signal quality",
     ],
     repoUrl: "https://github.com/Zachaditya/SP500-Predictor",
+    preview: "sp500-preview.png",
   },
 ];

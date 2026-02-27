@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import { motion, useAnimation } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ArrowDown, FileText, Github, Linkedin, Mail } from "lucide-react";
 import TypewriterOnce from "@/components/TypewriterOnce";
 
 export function Hero() {
   const techStackControls = useAnimation();
+  const [techStackVisible, setTechStackVisible] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -18,11 +19,14 @@ export function Hero() {
       scale: 0.95,
     });
     const sequence = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (!mounted) return;
+      setTechStackVisible(true);
       await techStackControls.start({
         filter: "blur(0px) brightness(1)",
         opacity: 0.85,
         scale: 1,
-        transition: { duration: 2.2, ease: "easeOut", delay: 1 },
+        transition: { duration: 2.8, ease: "easeOut", delay: 0.2 },
       });
       if (!mounted) return;
       techStackControls.start({
@@ -34,7 +38,9 @@ export function Hero() {
     };
     sequence();
 
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [techStackControls]);
 
   return (
@@ -138,6 +144,7 @@ export function Hero() {
             scale: 0.95,
           }}
           animate={techStackControls}
+          style={{ visibility: techStackVisible ? "visible" : "hidden" }}
         >
           <Image
             src="/tech-stack.png"
