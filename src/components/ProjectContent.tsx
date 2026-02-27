@@ -34,6 +34,7 @@ export function ProjectContent({ project }: { project: Project }) {
       <motion.div variants={item}>
         <Link
           href="/#projects"
+          onClick={() => sessionStorage.setItem("scrollTo", "projects")}
           className="text-sm text-white/60 hover:text-white transition-colors"
         >
           &larr; Back to Projects

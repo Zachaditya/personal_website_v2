@@ -1,14 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, type SyntheticEvent } from "react";
 
 export function WorkTogether() {
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("submitting");
     const form = e.currentTarget;
@@ -31,7 +31,7 @@ export function WorkTogether() {
   }
 
   return (
-    <section id="about" className="mt-135 px-5 py-20">
+    <section id="contact" className="mt-120 px-5 py-20 pb-50">
       <div className="mx-auto max-w-3xl text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -101,7 +101,7 @@ export function WorkTogether() {
                 required
                 rows={4}
                 className="w-full resize-none rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/40 outline-none transition-colors focus:border-white/30 focus:bg-white/10"
-                placeholder="Hey Zach, would love to connect, let's chat in the coming weeks 👀"
+                placeholder="Hey Zach, would love to connect, let's chat in the coming week 👀"
               />
             </div>
           </div>

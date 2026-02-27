@@ -2,7 +2,6 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import Navbar from "@/components/Navbar";
 
 export default function PageTransition({
   children,
@@ -13,7 +12,6 @@ export default function PageTransition({
 
   return (
     <div className="overflow-x-hidden">
-      <Navbar />
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={pathname}

@@ -50,12 +50,54 @@ export function StarField() {
     let raf: number;
     let frame = 0;
 
+    // Nebula blobs — normalized positions, use accent palette
+    type NebulaSpec = {
+      fx: number;
+      fy: number;
+      r: number;
+      rgb: string;
+      a: number;
+    };
+    const nebulae: NebulaSpec[] = [
+      { fx: 0.1,  fy: 0.08, r: 420, rgb: "13,153,255",  a: 0.042 },
+      { fx: 0.88, fy: 0.18, r: 320, rgb: "162,89,255",  a: 0.048 },
+      { fx: 0.5,  fy: 0.52, r: 360, rgb: "38,221,249",  a: 0.028 },
+      { fx: 0.22, fy: 0.8,  r: 240, rgb: "162,89,255",  a: 0.038 },
+      { fx: 0.78, fy: 0.88, r: 280, rgb: "13,153,255",  a: 0.032 },
+    ];
+
+    // Pre-built nebula gradient cache — rebuilt only on resize, not every frame
+    type NebulaCached = { grad: CanvasGradient; nx: number; ny: number; r: number };
+    let nebulaCache: NebulaCached[] = [];
+
+    const buildNebulaCache = () => {
+      const w = canvas.width;
+      const h = canvas.height;
+      nebulaCache = nebulae.map((n) => {
+        const nx = n.fx * w;
+        const ny = n.fy * h;
+        const grd = ctx.createRadialGradient(nx, ny, 0, nx, ny, n.r);
+        grd.addColorStop(0,   `rgba(${n.rgb},${n.a})`);
+        grd.addColorStop(0.5, `rgba(${n.rgb},${n.a * 0.35})`);
+        grd.addColorStop(1,   `rgba(${n.rgb},0)`);
+        return { grad: grd, nx, ny, r: n.r };
+      });
+    };
+
     const setSize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      buildNebulaCache();
     };
     setSize();
-    window.addEventListener("resize", setSize);
+
+    // Debounced resize listener — avoids thrashing on every resize event
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(setSize, 100);
+    };
+    window.addEventListener("resize", handleResize);
 
     // Stars — power-law radius distribution (many tiny, few large)
     const STAR_COUNT = 120;
@@ -102,22 +144,6 @@ export function StarField() {
       s.active = true;
     };
 
-    // Nebula blobs — normalized positions, use accent palette
-    type NebulaSpec = {
-      fx: number;
-      fy: number;
-      r: number;
-      rgb: string;
-      a: number;
-    };
-    const nebulae: NebulaSpec[] = [
-      { fx: 0.1,  fy: 0.08, r: 420, rgb: "13,153,255",  a: 0.042 },
-      { fx: 0.88, fy: 0.18, r: 320, rgb: "162,89,255",  a: 0.048 },
-      { fx: 0.5,  fy: 0.52, r: 360, rgb: "38,221,249",  a: 0.028 },
-      { fx: 0.22, fy: 0.8,  r: 240, rgb: "162,89,255",  a: 0.038 },
-      { fx: 0.78, fy: 0.88, r: 280, rgb: "13,153,255",  a: 0.032 },
-    ];
-
     const drawFrame = () => {
       frame++;
       const w = canvas.width;
@@ -125,17 +151,11 @@ export function StarField() {
 
       ctx.clearRect(0, 0, w, h);
 
-      // ── Nebulae ─────────────────────────────────────────────────
-      for (const n of nebulae) {
-        const nx = n.fx * w;
-        const ny = n.fy * h;
-        const grd = ctx.createRadialGradient(nx, ny, 0, nx, ny, n.r);
-        grd.addColorStop(0,   `rgba(${n.rgb},${n.a})`);
-        grd.addColorStop(0.5, `rgba(${n.rgb},${n.a * 0.35})`);
-        grd.addColorStop(1,   `rgba(${n.rgb},0)`);
-        ctx.fillStyle = grd;
+      // ── Nebulae (use cached gradients) ──────────────────────────
+      for (const { grad, nx, ny, r } of nebulaCache) {
+        ctx.fillStyle = grad;
         ctx.beginPath();
-        ctx.arc(nx, ny, n.r, 0, Math.PI * 2);
+        ctx.arc(nx, ny, r, 0, Math.PI * 2);
         ctx.fill();
       }
 
@@ -240,7 +260,8 @@ export function StarField() {
 
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener("resize", setSize);
+      clearTimeout(resizeTimer);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 

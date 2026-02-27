@@ -141,7 +141,6 @@ function TimelineCard({ item, index }: { item: ResumeItem; index: number }) {
                       width={32}
                       height={32}
                       className="object-contain"
-                      unoptimized
                       onError={() => setLogoError(true)}
                     />
                   )}

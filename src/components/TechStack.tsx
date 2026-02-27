@@ -132,10 +132,10 @@ export function TechStack() {
     return () => clearInterval(interval);
   }, []);
 
-  // Fade the overlay out (but keep it rendered) once WorkTogether enters,
-  // and spring the rotation back to upright as it goes.
+  // Spring the rotation back to upright in the gap between Experience and WorkTogether.
+  // Fires as soon as the gap marker enters the viewport; reverses on scroll-up.
   useEffect(() => {
-    const el = document.getElementById("about");
+    const el = document.getElementById("anim-gap");
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -145,9 +145,8 @@ export function TechStack() {
             stiffness: 80,
             damping: 20,
           });
-          animate(wrapperOpacity, 0, { duration: 0.4, ease: "easeOut" });
-        } else {
-          animate(wrapperOpacity, 1, { duration: 0.3, ease: "easeOut" });
+        } else if (entry.boundingClientRect.top > 0) {
+          // Element exited below viewport — user scrolled back up past it
           animate(fixedRotate, 45, {
             type: "spring",
             stiffness: 80,
@@ -155,11 +154,32 @@ export function TechStack() {
           });
         }
       },
+      // -30% bottom margin: element must scroll 30% of viewport height past the
+      // bottom edge before firing, adding extra scroll room before the animation.
+      { threshold: 0, rootMargin: "0px 0px -30% 0px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [fixedRotate]);
+
+  // Fade the overlay out once WorkTogether enters; restore on scroll-up.
+  useEffect(() => {
+    const el = document.getElementById("contact");
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          animate(wrapperOpacity, 0, { duration: 0.4, ease: "easeOut" });
+        } else if (entry.boundingClientRect.top > 0) {
+          // Element exited below viewport — user scrolled back up past it
+          animate(wrapperOpacity, 1, { duration: 0.3, ease: "easeOut" });
+        }
+      },
       { threshold: 0 },
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [fixedRotate, wrapperOpacity]);
+  }, [wrapperOpacity]);
 
   // Float animation — scale only; opacity and position owned by scroll
   useEffect(() => {

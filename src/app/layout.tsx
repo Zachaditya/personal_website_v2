@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import { StarField } from "@/components/StarField";
+import PageTransition from "@/components/PageTransition";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -22,7 +23,9 @@ export default function RootLayout({
     <html lang="en" className={outfit.variable}>
       <body className={outfit.className}>
         <StarField />
-        <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
+        <PageTransition>
+          <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
+        </PageTransition>
       </body>
     </html>
   );

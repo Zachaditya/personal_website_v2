@@ -10,6 +10,8 @@ export function Hero() {
   const techStackControls = useAnimation();
 
   useEffect(() => {
+    let mounted = true;
+
     techStackControls.set({
       filter: "blur(120px) brightness(1.5)",
       opacity: 0,
@@ -22,6 +24,7 @@ export function Hero() {
         scale: 1,
         transition: { duration: 2.2, ease: "easeOut", delay: 1 },
       });
+      if (!mounted) return;
       techStackControls.start({
         y: [0, -18, 0],
         scale: [1, 1.06, 1],
@@ -30,6 +33,8 @@ export function Hero() {
       });
     };
     sequence();
+
+    return () => { mounted = false; };
   }, [techStackControls]);
 
   return (
@@ -66,7 +71,7 @@ export function Hero() {
         <span className="text-white">Hello, I am</span>
 
         <br />
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+        <h1 className="text-3xl font-bold tracking-tight sm:text-5xl md:text-6xl">
           <TypewriterOnce
             text="Ernest Zachary Aditya"
             ms={70}
@@ -140,7 +145,6 @@ export function Hero() {
             width={600}
             height={600}
             className="max-h-[55vh] w-auto"
-            unoptimized
           />
         </motion.div>
       </div>
