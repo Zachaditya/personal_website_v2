@@ -7,10 +7,12 @@ export function WorkTogether() {
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
+  const [errorDetail, setErrorDetail] = useState<string | null>(null);
 
   async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("submitting");
+    setErrorDetail(null);
     const form = e.currentTarget;
     const formData = new FormData(form);
 
@@ -19,14 +21,17 @@ export function WorkTogether() {
         method: "POST",
         body: formData,
       });
+      const data = await res.json().catch(() => ({}));
       if (res.ok) {
         setStatus("success");
         form.reset();
       } else {
         setStatus("error");
+        setErrorDetail(data.details ?? data.error ?? "Unknown error");
       }
-    } catch {
+    } catch (err) {
       setStatus("error");
+      setErrorDetail(err instanceof Error ? err.message : "Network error");
     }
   }
 
@@ -116,7 +121,16 @@ export function WorkTogether() {
               }`}
             >
               {status === "success" && "Thanks! I'll get back to you soon."}
-              {status === "error" && "Something went wrong. Please try again."}
+              {status === "error" && (
+                <>
+                  Something went wrong. Please try again.
+                  {errorDetail && (
+                    <span className="mt-1 block text-xs opacity-80">
+                      {errorDetail}
+                    </span>
+                  )}
+                </>
+              )}
             </p>
             <button
               type="submit"

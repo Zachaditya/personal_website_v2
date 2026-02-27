@@ -88,9 +88,12 @@ export async function POST(request: Request) {
       });
 
       if (error) {
-        console.error("Resend error:", error);
+        console.error("Resend error:", JSON.stringify(error, null, 2));
         return NextResponse.json(
-          { error: "Form submission failed" },
+          {
+            error: "Form submission failed",
+            details: process.env.NODE_ENV === "development" ? String(error) : undefined,
+          },
           { status: 500 }
         );
       }
@@ -98,14 +101,19 @@ export async function POST(request: Request) {
       return NextResponse.json(data);
     } catch (err) {
       console.error("Contact form error:", err);
+      const message = err instanceof Error ? err.message : String(err);
       return NextResponse.json(
-        { error: "Form submission failed" },
+        {
+          error: "Form submission failed",
+          details: process.env.NODE_ENV === "development" ? message : undefined,
+        },
         { status: 500 }
       );
     }
   }
 
-  
+  // Resend not configured — dev fallback
+  console.log("Contact form: Resend not configured (missing RESEND_API_KEY or RESEND_TO_EMAIL)");
   return NextResponse.json({ ok: true });
 }
 
