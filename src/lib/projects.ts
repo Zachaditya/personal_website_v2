@@ -8,33 +8,36 @@ export type Project = {
   highlights: string[];
   repoUrl?: string;
   wip?: boolean;
+  brewing?: boolean;
   liveUrl?: string;
 };
 
 export const PROJECTS: Project[] = [
   {
     slug: "portfolio_recommender",
-    title: "Portfolio Recommender System",
-    date: "Jan 2026",
-    tags: ["AI", "Financial Modelling", "Next.js", "TypeScript", "UI/UX", "FastAPI", "SQLite3"],
+    title: "Portfolio Dashboard",
+    date: "February 2026",
+    tags: ["Dashboard", "Data Visualization", "Agentic workflows", "Next.js", "FastAPI",  "UI/UX", "LLM"],
     short:
-      "Building a tailored portfolio recommendation system using LLMs to provide personalized investment suggestions based on user risk preferences and market data.",
-    overview: `Building a tailored portfolio recommendation system based on user's answers to a set of survey questions to calibrate user's risk appetite and investment goals.
-Portfolio recommendations take into account volatility spikes in different markets, institutional maturity and returns`,
+      "Built an Informative portfolio dashboard to visualize the user's portfolio and performance and provide actionable insights to optimize the portfolio.",
+    overview: `Designed and engineered a full-stack fintech dashboard to bridge the gap between complex financial data and actionable user insights. The platform integrates interactive analytics—including benchmark 
+    overlays against the S&P 500 and Bitcoin—to provide a comprehensive view of risk exposure, returns, and portfolio composition. To lower the barrier to sophisticated financial analysis, I architected an 
+    AI chatbot that translates performance drivers and technical metrics into plain-language optimization strategies. By combining a Next.js/FastAPI stack with LLM-integrated workflows, the project demonstrates a product-first approach to building accessible, high-utility financial tools. 
+    This dashboard serves as a robust proof-of-concept for how AI-native engineering can democratize institutional-grade portfolio management.`,
     highlights: [
-      "Risk survey + onboarding UX (calibrates risk appetite + goals)",
-      "LLM-driven portfolio recommendations (transparent rationale, constraints-aware)",
-      "Market signal inputs (volatility spikes, asset class maturity, returns considerations)",
-      "Full-stack pipeline (Next.js UI → FastAPI endpoints → SQLite persistence)",
+      "Data Visualization and Analytics using React",
+      "Portfolio Performance Tracking and Analysis",
+      "Agentic workflows to provide actionable insights to optimize the portfolio",
     ],
-    repoUrl: "https://github.com/Zachaditya/eshop-hm_dataset",
-    wip: true,
+    repoUrl: "https://github.com/Zachaditya/personal_finance_dashboard",
+    liveUrl: "https://personal-finance-dashboard-three-brown.vercel.app",
+    brewing: true,
   },
   {
     slug: "hm-shop",
-    title: "HM-Shop: E-commerce Simulation + AI Shopping Assistant",
-    date: "Jan 2026",
-    tags: ["LLM", "AI", "Next.js", "TypeScript", "UI/UX", "FastAPI", "SQLite3"],
+    title: "E-commerce Simulation + AI Shopping Assistant",
+    date: "January 2026",
+    tags: ["Full-stack", "Agentic workflows", "Auth",  "TypeScript", "UI/UX", "FastAPI", "SQLite3" ,"Next.js",],
     short:
       "Built a modern Next.js storefront over an H&M dataset with search/filtering, product pages, cart, and a chatbot grounded in catalog context.",
     overview: `This project simulates a full, end-to-end e-commerce experience using real product metadata from the Kaggle H&M dataset. I built the frontend as a responsive storefront with Next.js App Router and TypeScript modelling real online e-commerce shops with all the features you would expect: a product catalog, a search bar to query products, an add to cart feature, an onboarding feature as well as a chatbot to help guide the user to the best-fit products.
@@ -53,14 +56,17 @@ The standout feature is an AI shopping assistant embedded in the site. Instead o
     slug: "internal-dacs-tool",
     title: "DACS Risk Management and Visualization Tool",
     date: "August 2025",
-    tags: ["Quant", "Risk Analysis", "Financial Modelling", "Python", "Flask", "Data Science/Visualization"],
+    tags: ["Risk Analysis", "Financial Modelling", "Flask", "Data Science/Visualization"],
     short:
-      "An visualization tool used to analyze portfolio risk to maintain optimal risk parameters for the user base",
+      "An internal visualization tool used to analyze portfolio risk to maintain optimal risk parameters for the user base",
     overview:
-      "During my time at Aetherum.ai, I built the Digital Asset Credit Score. A credit scoring metric focused on analyzing user portfolios holistically to give Aetherum the most suitable loan terms. I created an internal tool for the team to use to keep track of the changing crypto market which is extremely volatile and tweak the financial model as the team see fit",
+    `At Aetherum.ai, I engineered high-stakes fintech infrastructure designed to quantify risk within the volatile digital asset market. 
+    I developed the Digital Asset Credit Score, a multi-dimensional risk engine that holistically analyzes user portfolios to determine optimal loan terms and collateral requirements. 
+    To support this, I built an internal monitoring platform that integrated real-time market data, allowing the team to dynamically stress-test financial models against shifting liquidity and volatility. 
+    By bridging the gap between complex financial logic and functional product tooling, I provided the team with the decision-support system necessary to manage a high-throughput lending book. The tool
+    was built with Flask and used data sciene libraries for visualization and data analysis.`,
     highlights: [
-      "Wallet-level Digital Asset Credit Score (DACS) built from on-chain + market signals for underwriting",
-      "Python scoring pipeline + API layer to serve real-time risk metrics to internal consumers",
+      "Internal tool built with Flask and used data sciene libraries for visualization and data analysis",
       "Evaluation/backtesting harness (stress scenarios, threshold tuning, calibration) to validate reliability",
       "Internal dashboard for model introspection (drilldowns, explainability-style signals, audit-friendly outputs)",
     ],
@@ -71,10 +77,13 @@ The standout feature is an AI shopping assistant embedded in the site. Instead o
     slug: "dacs",
     title: "Digital Asset Credit Score: Wallet-Level Risk Modeling",
     date: "June 2025",
-    tags: ["Python", "Risk Analysis", "Financial Modeling", "Data Science", "Statistics"],
+    tags: ["Risk Analysis", "Financial Modeling", "Data Science", "Statistics", "Python", ],
     short:
       "Built a wallet-level risk scoring model for crypto-collateralized lending, combining market volatility signals and conventional credit scoring metrics into an interpretable Digital Asset Credit Score (DACS).",
-    overview: `This project builds a Digital Asset Credit Score (DACS) to quantify wallet-level risk for crypto-collateralized lending. The model aggregates on-chain behavior signals (e.g., activity/flows and wallet characteristics) alongside market risk signals (e.g., volatility and drawdown proxies) into a structured score that can be used to inform underwriting and risk controls.
+    overview: `This was my main project in Aetherum.ai, where I built a credit scoring algorithm to assess user credit-worthiness alongside feedback from Professors at the Haas School of Business. 
+    The financial model aggregates conventional credit scoring metrics: The FICO Score, The user's AUM and the user's liquidity adjusted net-worth. 
+    Alongside the conventional credit scoring metrics, I also implemented 2 metrics: the volatility score and the asset quality which mainly evaluates the user's digital asset portfolio in terms of the implied volatility and the quality of the digital asset itself.
+The final score is a weighted sum of the conventional credit scoring metrics and the 2 additional metrics. The score is then fed into the Aetherum's agentic workflow for the final loan underwriting process.
 
 I focused on making the system practical for real-world decisioning: clear feature definitions, transparent scoring logic, and evaluation workflows to tune thresholds and validate stability under changing market conditions. The result is a score designed to be interpretable, testable, and usable as an input to collateral parameters and portfolio risk monitoring.`,
     highlights: [
@@ -89,7 +98,7 @@ I focused on making the system practical for real-world decisioning: clear featu
     slug: "spotify",
     title: "Spotify Playlist Generator",
     date: "March 2025",
-    tags: ["UI/UX", "Machine Learning", "Search Engine", "Recommendation System", "Data Science"],
+    tags: ["Flask", "Machine Learning", "Search Engine", "Recommendation System", "Data Science", "Python"],
     short:
       "Built a Spotify-style playlist builder with search and ML-driven recommendations that update based on the user's evolving playlist.",
     overview: `This project simulates a Spotify-like experience where users can search tracks, build playlists, and receive personalized recommendations from that playlist. I implemented the core recommendation logic using similarity-based ML techniques, turning playlist context into ranked suggestions that adapt as tracks are added or removed.

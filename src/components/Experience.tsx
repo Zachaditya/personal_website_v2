@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import TypewriterOnce from "./TypewriterOnce";
-import { Download, GraduationCap } from "lucide-react";
+import { FileText, GraduationCap, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -10,7 +10,7 @@ type ResumeItem = {
   title: string;
   org: string;
   dates: string;
-  description: string;
+  description: string | string[];
   tags?: string[];
   logo?: string; // URL or path for org/school logo
 };
@@ -20,32 +20,46 @@ const EXPERIENCE: ResumeItem[] = [
     title: "Full-Stack Engineer",
     org: "Aetherum.ai",
     dates: "Apr 2025 - Dec 2025",
-    description:
-      "Designed financial models for user credit-worthiness, built internal tooling for underwriting, and developed React/FastAPI dashboards for real-time portfolio tracking.",
+    description: [
+      "Designed and implemented financial models to assess credit-worthiness of users to reduce risk exposure to cryptocurrency market volatility.",
+      "Built an internal web app for scenario testing and validation of underwriting models, improving iteration speed and enabling faster, safer releases.",
+      "Built React dashboards for real-time portfolio tracking, achieving 100% beta onboarding and high user retention through iterative UI updates.",
+    ],
     tags: ["React", "FastAPI", "Python", "PyTorch"],
   },
   {
     title: "Research Assistant",
     org: "Spero Studios",
     dates: "Oct 2022 - Dec 2022",
-    description:
-      "Analyzed 20+ top-performing SEA arcade games using Google Trends and Twitch Tracker, delivering data-backed proposals that placed 3rd at Polygon Development Hackathon.",
+    description: [
+      "Analyzed 20+ top-performing arcade games using Google Trends and Twitch Tracker to identify SEA market trends and player preferences.",
+      "Proposed data-backed game aesthetics that helped the team place 3rd out of 100+ competitors at the Polygon Development Hackathon.",
+      "Collaborated cross-functionally to deliver research insights that improved design efficiency by 15% and streamlined the product roadmap.",
+    ],
     tags: ["Research", "Data Analysis", "Web3"],
   },
   {
     title: "Tutor & Teaching Assistant",
-    org: "DVC Math Faculty",
+    org: "Diablo Valley College Math Faculty",
     dates: "Sep 2022 - May 2023",
-    description:
-      "Tutored 10-20 students weekly in Linear Algebra, Differential Equations, and Multivariable Calculus. Collaborated with faculty to support 30+ Precalculus students.",
+    description: [
+      "Tutored 10–20 students weekly on topics ranging from precalculus to linear algebra and differential equations.",
+      "Collaborated with a professor for a precalculus class to assist a class of 30+ students, clarifying complex mathematical concepts during lectures.",
+      "Simplified abstract mathematical logic into digestible strategies, improving student comprehension and performance in high-difficulty STEM courses.",
+      "Managed a high-volume tutoring workflow, requiring real-time problem-solving and context-switching between various mathematical disciplines.",
+    ],
     tags: ["Teaching", "Mathematics"],
   },
   {
     title: "Teaching Intern",
-    org: "IFund Education",
+    org: "Bercerita (IFund Education)",
     dates: "Sep 2022 - May 2023",
-    description:
-      "Facilitated virtual English instruction for 10+ students in rural Indonesia, implementing interactive project-based learning modules.",
+    description: [
+      "Taught English to a class of 10 Indonesian students from underprivileged rural neighborhoods via Zoom, improving language proficiency and confidence.",
+      "Facilitated virtual instruction for students in rural Indonesia, bridging educational gaps through remote learning technology and digital tools.",
+      "Simplified complex language frameworks into digestible lessons, tailoring delivery to diverse proficiency levels and cultural contexts.",
+      "Optimized student engagement and communication confidence by implementing interactive, project-based learning modules.",
+    ],
     tags: ["Education", "Remote"],
   },
 ];
@@ -55,8 +69,7 @@ const EDUCATION: ResumeItem[] = [
     title: "B.A. Data Science",
     org: "UC Berkeley",
     dates: "Aug 2023 - Aug 2025",
-    description:
-      "Concentration: Business and Industrial Analytics. GPA: 3.4/4.0",
+    description: "GPA: 3.45/4.0",
     tags: ["Data Science", "Analytics"],
     logo: "/cal_logo.png",
   },
@@ -75,16 +88,21 @@ const EXTRACURRICULAR: ResumeItem[] = [
     title: "VP & Co-Founding Officer",
     org: "DVC Blockchain",
     dates: "Sep 2022 - May 2023",
-    description:
-      "Co-founded blockchain student org, grew community to 200+ followers. Led workshop with prominent founder attracting 80+ attendees.",
+    description: [
+      "Co-founded and led a blockchain-focused student organization with ten main team members, growing a community to 200+ followers through strategic social media campaigns and outreach initiatives.",
+      "Spearheaded the planning and execution of a workshop featuring a prominent blockchain startup founder, attracting and engaging over 80 attendees.",
+      "Collaborated with a team to promote blockchain education, foster networking opportunities, and establish the organization as a hub for blockchain enthusiasts on campus.",
+    ],
     tags: ["Leadership", "Blockchain"],
   },
   {
     title: "Project Manager",
     org: "DVC Project Bracket",
     dates: "Sep 2022 - Dec 2022",
-    description:
-      "Directed developer team building an onboarding Android app using Kotlin.",
+    description: [
+      "Directed a team of developers in designing and building an onboarding Android app for Contra Costa College students using Kotlin, enhancing the student onboarding experience.",
+      "Facilitated weekly meetings to track progress, resolve challenges, and ensure timely delivery of project milestones.",
+    ],
     tags: ["Project Management", "Kotlin"],
   },
 ];
@@ -92,6 +110,7 @@ const EXTRACURRICULAR: ResumeItem[] = [
 function TimelineCard({ item, index }: { item: ResumeItem; index: number }) {
   const isLeft = index % 2 === 0;
   const [logoError, setLogoError] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <motion.div
@@ -103,47 +122,88 @@ function TimelineCard({ item, index }: { item: ResumeItem; index: number }) {
         isLeft ? "md:justify-start" : "md:justify-end"
       }`}
     >
-      <div className="w-full md:w-[calc(50%-2rem)]">
-        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-5">
-          <div className="text-xs text-white">{item.dates}</div>
-          <h3 className="mt-2 text-base font-semibold text-white">
-            {item.title}
-          </h3>
-          <div className="mt-1 flex items-center gap-2">
-            {item.logo && (
-              <div className="relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded">
-                {logoError ? (
-                  <GraduationCap className="h-4 w-4 text-white/50" />
-                ) : (
-                  <Image
-                    src={item.logo}
-                    alt=""
-                    width={32}
-                    height={32}
-                    className="object-contain"
-                    unoptimized
-                    onError={() => setLogoError(true)}
-                  />
-                )}
+      <div className="w-full md:w-[calc(50%-1.5rem)]">
+        <div className="rounded-2xl border border-white/10 bg-[#0c0e10] overflow-hidden">
+          {/* Dropdown header */}
+          <button
+            onClick={() => setOpen((v) => !v)}
+            className="w-full flex items-center justify-between gap-3 p-5 text-left hover:bg-white/[0.03] transition-colors"
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              {item.logo && (
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded">
+                  {logoError ? (
+                    <GraduationCap className="h-4 w-4 text-white/50" />
+                  ) : (
+                    <Image
+                      src={item.logo}
+                      alt=""
+                      width={32}
+                      height={32}
+                      className="object-contain"
+                      unoptimized
+                      onError={() => setLogoError(true)}
+                    />
+                  )}
+                </div>
+              )}
+              <div className="min-w-0">
+                <div className="text-xs text-white/50">{item.dates}</div>
+                <div className="mt-0.5 text-base font-semibold text-white leading-tight">
+                  {item.title}
+                </div>
+                <div className="mt-0.5 text-sm text-[#26DDF9]">{item.org}</div>
               </div>
-            )}
-            <span className="text-sm text-[#26DDF9]">{item.org}</span>
-          </div>
-          <p className="mt-3 text-sm leading-relaxed text-white/60">
-            {item.description}
-          </p>
-          {item.tags && (
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {item.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-white/50"
-                >
-                  {tag}
-                </span>
-              ))}
             </div>
-          )}
+            <ChevronDown
+              className={`h-4 w-4 shrink-0 text-white/40 transition-transform duration-300 ${
+                open ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+
+          {/* Collapsible body */}
+          <AnimatePresence initial={false}>
+            {open && (
+              <motion.div
+                key="body"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <div className="px-5 pb-5 pt-4">
+                  {Array.isArray(item.description) ? (
+                    <ul className="space-y-1.5 text-sm leading-relaxed text-white/60">
+                      {item.description.map((bullet, i) => (
+                        <li key={i} className="flex gap-2">
+                          <span className="mt-1 shrink-0 text-white/40">•</span>
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm leading-relaxed text-white/60">
+                      {item.description}
+                    </p>
+                  )}
+                  {item.tags && (
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {item.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-white/50"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </motion.div>
@@ -202,13 +262,13 @@ export function Experience() {
             href="/RESUME_ErnestAditya_Aetherum.pdf"
             className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition-colors hover:bg-white/10"
           >
-            <Download className="h-4 w-4" />
+            <FileText className="h-4 w-4" />
             Download Resume PDF
           </a>
         </div>
 
-        <TimelineSection title="Work Experience" items={EXPERIENCE} />
         <TimelineSection title="Education" items={EDUCATION} />
+        <TimelineSection title="Work Experience" items={EXPERIENCE} />
         <TimelineSection title="Extracurricular" items={EXTRACURRICULAR} />
       </div>
     </section>

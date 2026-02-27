@@ -4,7 +4,9 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 export function WorkTogether() {
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -29,7 +31,7 @@ export function WorkTogether() {
   }
 
   return (
-    <section id="about" className="mt-24 px-5 py-20">
+    <section id="about" className="mt-135 px-5 py-20">
       <div className="mx-auto max-w-3xl text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -41,11 +43,7 @@ export function WorkTogether() {
             Let's Work Together!
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg">
-            I&apos;m a data scientist and full-stack engineer from Berkeley,
-            passionate about building products at the intersection of finance,
-            AI, and web technology. Outside of work, you&apos;ll find me on the
-            golf course, making music, or exploring design systems and product
-            storytelling.
+            👾 Drop me a message, ideas or anything on your mind.
           </p>
         </motion.div>
 
@@ -59,7 +57,10 @@ export function WorkTogether() {
         >
           <div className="space-y-4">
             <div>
-              <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-white/80">
+              <label
+                htmlFor="name"
+                className="mb-1.5 block text-sm font-medium text-white/80"
+              >
                 Name
               </label>
               <input
@@ -72,7 +73,10 @@ export function WorkTogether() {
               />
             </div>
             <div>
-              <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-white/80">
+              <label
+                htmlFor="email"
+                className="mb-1.5 block text-sm font-medium text-white/80"
+              >
                 Email
               </label>
               <input
@@ -85,7 +89,10 @@ export function WorkTogether() {
               />
             </div>
             <div>
-              <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-white/80">
+              <label
+                htmlFor="message"
+                className="mb-1.5 block text-sm font-medium text-white/80"
+              >
                 Message
               </label>
               <textarea
@@ -94,7 +101,7 @@ export function WorkTogether() {
                 required
                 rows={4}
                 className="w-full resize-none rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/40 outline-none transition-colors focus:border-white/30 focus:bg-white/10"
-                placeholder="Tell me about your project..."
+                placeholder="Hey Zach, would love to connect, let's chat in the coming weeks 👀"
               />
             </div>
           </div>

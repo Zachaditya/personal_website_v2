@@ -3,6 +3,7 @@
 import Image from "next/image";
 import {
   motion,
+  animate,
   useAnimation,
   useInView,
   AnimatePresence,
@@ -12,6 +13,7 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
+import TypewriterOnce from "./TypewriterOnce";
 
 const STACK = [
   {
@@ -44,7 +46,6 @@ function clamp01(v: number) {
 }
 
 export function TechStack() {
-  const headingRef = useRef<HTMLHeadingElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   // Stores the section image's offset from viewport center, measured when it first enters view.
@@ -52,13 +53,10 @@ export function TechStack() {
   const startOffsetRef = useRef({ x: 0, y: 0 });
   const backgroundGifRef = useRef<HTMLImageElement>(null);
 
-  const isHeadingInView = useInView(headingRef, {
-    once: true,
-    margin: "-50px",
-  });
   const isImageInView = useInView(imageRef, { once: true, margin: "-50px" });
   const [bongoVisible, setBongoVisible] = useState(false);
   const imageControls = useAnimation();
+  const wrapperOpacity = useMotionValue(1);
 
   // Tracks the section's bottom edge scrolling from viewport-bottom → viewport-top.
   // This window spans the pb-160 gap between the content and the next section.
@@ -134,6 +132,35 @@ export function TechStack() {
     return () => clearInterval(interval);
   }, []);
 
+  // Fade the overlay out (but keep it rendered) once WorkTogether enters,
+  // and spring the rotation back to upright as it goes.
+  useEffect(() => {
+    const el = document.getElementById("about");
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          animate(fixedRotate, 0, {
+            type: "spring",
+            stiffness: 80,
+            damping: 20,
+          });
+          animate(wrapperOpacity, 0, { duration: 0.4, ease: "easeOut" });
+        } else {
+          animate(wrapperOpacity, 1, { duration: 0.3, ease: "easeOut" });
+          animate(fixedRotate, 45, {
+            type: "spring",
+            stiffness: 80,
+            damping: 20,
+          });
+        }
+      },
+      { threshold: 0 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [fixedRotate, wrapperOpacity]);
+
   // Float animation — scale only; opacity and position owned by scroll
   useEffect(() => {
     if (!isImageInView) return;
@@ -148,10 +175,11 @@ export function TechStack() {
 
   return (
     <>
-      {/* Fixed overlay — starts at section image position and translates to center */}
-      <div
+      {/* Fixed overlay — fades out (stays rendered) when WorkTogether enters */}
+      <motion.div
         className="fixed inset-0 z-0 flex items-center justify-center px-5 pointer-events-none"
         aria-hidden
+        style={{ opacity: wrapperOpacity }}
       >
         <motion.div
           className="relative w-full max-w-md"
@@ -197,19 +225,12 @@ export function TechStack() {
             )}
           </AnimatePresence>
         </motion.div>
-      </div>
+      </motion.div>
 
       <section ref={sectionRef} className="relative z-10 px-5 pt-32 pb-160">
         <div className="mx-auto max-w-6xl">
-          <h1
-            ref={headingRef}
-            className={`mb-16 text-center text-4xl font-bold tracking-tight sm:text-3xl md:text-4xl ${
-              isHeadingInView
-                ? "animate-blur-in-vertical"
-                : "opacity-0 blur-[16px] translate-y-5"
-            }`}
-          >
-            Tech Stack
+          <h1 className="mb-16 text-center text-4xl font-bold tracking-tight sm:text-3xl md:text-4xl">
+            <TypewriterOnce text="Tech Stack" ms={100} triggerOnScroll />
           </h1>
 
           <div className="flex flex-col items-center gap-10 md:flex-row md:items-center md:gap-44">

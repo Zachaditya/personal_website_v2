@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
-import { ArrowDown, Download, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowDown, FileText, Github, Linkedin, Mail } from "lucide-react";
 import TypewriterOnce from "@/components/TypewriterOnce";
 
 export function Hero() {
@@ -108,17 +108,18 @@ export function Hero() {
         <div className="mt-8 flex flex-wrap items-center gap-4">
           <a
             href="#projects"
-            className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#010304] transition-transform hover:scale-[1.02]"
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/5"
           >
             View Projects
             <ArrowDown className="h-4 w-4" />
           </a>
+
           <a
             href="/RESUME_ErnestAditya_Aetherum.pdf"
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/5"
+            className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#010304] transition-transform hover:scale-[1.02]"
           >
             Download Resume
-            <Download className="h-4 w-4" />
+            <FileText className="h-4 w-4" />
           </a>
         </div>
       </div>

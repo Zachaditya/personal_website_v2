@@ -61,31 +61,36 @@ export function ProjectsPreview() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-30px" }}
               transition={{ duration: 0.4, delay: i * 0.05 }}
-              className="flex flex-col rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 transition-colors hover:bg-white/[0.08]"
+              className="relative flex flex-col rounded-2xl border border-white/10 bg-[#0c0e10] p-4 transition-colors hover:bg-[#111315]"
             >
-              {/* Status badges */}
-              <div className="flex items-center gap-2">
-                <span className="font-['Fira_Code'] text-[10px] text-white/40">
-                  {p.date}
-                </span>
+              {/* Status badges - top right */}
+              <div className="absolute right-4 top-4 flex flex-wrap justify-end gap-2">
                 {p.liveUrl && (
                   <a
                     href={p.liveUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 rounded-full border border-[#0ACF83]/30 bg-[#0ACF83]/10 px-2 py-0.5 text-[10px] font-medium text-[#0ACF83]"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[#0ACF83]/30 bg-[#0ACF83]/10 px-2.5 py-1 text-xs font-medium text-[#0ACF83]"
                   >
-                    <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[#0ACF83]" />
+                    <span className="pulse-dot h-2 w-2 rounded-full bg-[#0ACF83]" />
                     Live
                   </a>
                 )}
                 {!p.liveUrl && p.wip && (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] font-medium text-amber-400">
-                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 px-2.5 py-1 text-xs font-medium text-amber-400">
+                    <span className="h-2 w-2 rounded-full bg-amber-400" />
                     In Progress
                   </span>
                 )}
+                {p.brewing && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-400/30 bg-sky-400/10 px-2.5 py-1 text-xs font-medium text-sky-400">
+                    <span className="pulse-dot h-2 w-2 rounded-full bg-sky-400" />
+                    Brewing Updates
+                  </span>
+                )}
               </div>
+
+              <span className="text-sm text-white/40">{p.date}</span>
 
               <h3 className="mt-2 text-sm font-semibold tracking-tight text-white">
                 {p.title}
