@@ -107,10 +107,18 @@ const EXTRACURRICULAR: ResumeItem[] = [
   },
 ];
 
-function TimelineCard({ item, index }: { item: ResumeItem; index: number }) {
+function TimelineCard({
+  item,
+  index,
+  defaultExpanded = false,
+}: {
+  item: ResumeItem;
+  index: number;
+  defaultExpanded?: boolean;
+}) {
   const isLeft = index % 2 === 0;
   const [logoError, setLogoError] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultExpanded);
 
   return (
     <motion.div
@@ -212,9 +220,11 @@ function TimelineCard({ item, index }: { item: ResumeItem; index: number }) {
 function TimelineSection({
   title,
   items,
+  defaultExpanded = false,
 }: {
   title: string;
   items: ResumeItem[];
+  defaultExpanded?: boolean;
 }) {
   return (
     <div className="mt-16 first:mt-0">
@@ -227,7 +237,12 @@ function TimelineSection({
 
         <div className="space-y-6">
           {items.map((item, i) => (
-            <TimelineCard key={item.title + item.org} item={item} index={i} />
+            <TimelineCard
+              key={item.title + item.org}
+              item={item}
+              index={i}
+              defaultExpanded={defaultExpanded}
+            />
           ))}
         </div>
       </div>
@@ -267,7 +282,11 @@ export function Experience() {
         </div>
 
         <TimelineSection title="Education" items={EDUCATION} />
-        <TimelineSection title="Work Experience" items={EXPERIENCE} />
+        <TimelineSection
+          title="Work Experience"
+          items={EXPERIENCE}
+          defaultExpanded
+        />
         <TimelineSection title="Extracurricular" items={EXTRACURRICULAR} />
       </div>
     </section>

@@ -44,7 +44,7 @@ export function StarField() {
     if (!ctx) return;
 
     const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     ).matches;
 
     let raf: number;
@@ -59,15 +59,20 @@ export function StarField() {
       a: number;
     };
     const nebulae: NebulaSpec[] = [
-      { fx: 0.1,  fy: 0.08, r: 420, rgb: "13,153,255",  a: 0.042 },
-      { fx: 0.88, fy: 0.18, r: 320, rgb: "162,89,255",  a: 0.048 },
-      { fx: 0.5,  fy: 0.52, r: 360, rgb: "38,221,249",  a: 0.028 },
-      { fx: 0.22, fy: 0.8,  r: 240, rgb: "162,89,255",  a: 0.038 },
-      { fx: 0.78, fy: 0.88, r: 280, rgb: "13,153,255",  a: 0.032 },
+      { fx: 0.1, fy: 0.08, r: 420, rgb: "13,153,255", a: 0.042 },
+      { fx: 0.88, fy: 0.18, r: 320, rgb: "162,89,255", a: 0.048 },
+      { fx: 0.5, fy: 0.52, r: 360, rgb: "38,221,249", a: 0.028 },
+      { fx: 0.22, fy: 0.8, r: 240, rgb: "162,89,255", a: 0.038 },
+      { fx: 0.78, fy: 0.88, r: 280, rgb: "13,153,255", a: 0.032 },
     ];
 
     // Pre-built nebula gradient cache — rebuilt only on resize, not every frame
-    type NebulaCached = { grad: CanvasGradient; nx: number; ny: number; r: number };
+    type NebulaCached = {
+      grad: CanvasGradient;
+      nx: number;
+      ny: number;
+      r: number;
+    };
     let nebulaCache: NebulaCached[] = [];
 
     const buildNebulaCache = () => {
@@ -77,9 +82,9 @@ export function StarField() {
         const nx = n.fx * w;
         const ny = n.fy * h;
         const grd = ctx.createRadialGradient(nx, ny, 0, nx, ny, n.r);
-        grd.addColorStop(0,   `rgba(${n.rgb},${n.a})`);
+        grd.addColorStop(0, `rgba(${n.rgb},${n.a})`);
         grd.addColorStop(0.5, `rgba(${n.rgb},${n.a * 0.35})`);
-        grd.addColorStop(1,   `rgba(${n.rgb},0)`);
+        grd.addColorStop(1, `rgba(${n.rgb},0)`);
         return { grad: grd, nx, ny, r: n.r };
       });
     };
@@ -229,9 +234,9 @@ export function StarField() {
           const tailY = s.y - (s.vy / speed) * s.tailLength;
 
           const grad = ctx.createLinearGradient(tailX, tailY, s.x, s.y);
-          grad.addColorStop(0,   "rgba(255,255,255,0)");
+          grad.addColorStop(0, "rgba(255,255,255,0)");
           grad.addColorStop(0.6, `rgba(180,220,255,${s.opacity * 0.35})`);
-          grad.addColorStop(1,   `rgba(255,255,255,${s.opacity})`);
+          grad.addColorStop(1, `rgba(255,255,255,${s.opacity})`);
           ctx.strokeStyle = grad;
           ctx.lineWidth = 1.5;
           ctx.beginPath();
@@ -240,10 +245,7 @@ export function StarField() {
           ctx.stroke();
 
           // Bright tip flare
-          const tipGlow = ctx.createRadialGradient(
-            s.x, s.y, 0,
-            s.x, s.y, 7
-          );
+          const tipGlow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 7);
           tipGlow.addColorStop(0, `rgba(255,255,255,${s.opacity})`);
           tipGlow.addColorStop(1, "rgba(255,255,255,0)");
           ctx.fillStyle = tipGlow;
