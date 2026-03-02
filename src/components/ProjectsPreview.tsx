@@ -58,36 +58,44 @@ export function ProjectsPreview() {
         </motion.div>
 
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-          {sorted.map((p, i) => (
-            <motion.article
-              key={p.slug}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-30px" }}
-              transition={{ duration: 0.4, delay: i * 0.05 }}
-              role="button"
-              tabIndex={0}
-              onClick={() => router.push(`/projects/${p.slug}`)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  router.push(`/projects/${p.slug}`);
-                }
-              }}
-              className="flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0c0e10] transition-colors hover:bg-[#111315]"
-            >
-              {p.preview && (
-                <div className="relative h-28 w-full shrink-0 overflow-hidden bg-white/5 sm:h-32">
-                  <Image
-                    src={`/previews/${p.preview}`}
-                    alt=""
-                    fill
-                    sizes="(max-width: 640px) 100vw, 50vw"
-                    className="object-cover object-top"
-                  />
-                </div>
-              )}
-              <div className="flex flex-1 flex-col p-4">
+          {sorted.map((p, i) => {
+            const isFirst = i === 0;
+            const card = (
+              <motion.article
+                key={p.slug}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                whileHover={{ y: -4 }}
+                role="button"
+                tabIndex={0}
+                onClick={() => router.push(`/projects/${p.slug}`)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    router.push(`/projects/${p.slug}`);
+                  }
+                }}
+                className={`flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0c0e10] transition-colors hover:bg-[#111315] ${
+                  isFirst ? "border-0" : ""
+                }`}
+              >
+                {p.preview && (
+                  <div className="relative h-28 w-full shrink-0 overflow-hidden bg-white/5 sm:h-32">
+                    <Image
+                      src={`/previews/${p.preview}`}
+                      alt=""
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      className="object-cover object-top"
+                    />
+                  </div>
+                )}
+                {p.preview && (
+                  <div className="h-0.5 w-full shrink-0 bg-[#26DDF9]" />
+                )}
+                <div className="flex flex-1 flex-col p-4">
               {/* Top row: date + status badges inline — no absolute positioning so nothing overlaps */}
               <div className="flex items-start justify-between gap-2">
                 <span className="text-sm text-white/40 shrink-0">{p.date}</span>
@@ -163,7 +171,15 @@ export function ProjectsPreview() {
               </div>
               </div>
             </motion.article>
-          ))}
+            );
+            return isFirst ? (
+              <div key={p.slug} className="card-gradient-border">
+                <div className="card-gradient-border-inner">{card}</div>
+              </div>
+            ) : (
+              card
+            );
+          })}
         </div>
       </div>
     </section>

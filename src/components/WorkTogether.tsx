@@ -2,12 +2,36 @@
 
 import { motion } from "framer-motion";
 import { useState, type SyntheticEvent } from "react";
+import TypewriterOnce from "./TypewriterOnce";
+
+const SUGGESTED_MESSAGE =
+  "Hey Zach, would love to connect, let's chat in the coming week 👀";
 
 export function WorkTogether() {
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
   const [errorDetail, setErrorDetail] = useState<string | null>(null);
+  const [messageValue, setMessageValue] = useState("");
+  const [messageFocused, setMessageFocused] = useState(false);
+
+  const showAutocomplete =
+    messageValue.length > 0 &&
+    SUGGESTED_MESSAGE.toLowerCase().startsWith(messageValue.toLowerCase()) &&
+    messageValue !== SUGGESTED_MESSAGE;
+
+  function acceptAutocomplete() {
+    if (showAutocomplete) {
+      setMessageValue(SUGGESTED_MESSAGE);
+    }
+  }
+
+  function handleMessageKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if ((e.key === "Tab" || e.key === "Enter") && showAutocomplete) {
+      e.preventDefault();
+      acceptAutocomplete();
+    }
+  }
 
   async function handleSubmit(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -25,6 +49,7 @@ export function WorkTogether() {
       if (res.ok) {
         setStatus("success");
         form.reset();
+        setMessageValue("");
       } else {
         setStatus("error");
         setErrorDetail(data.details ?? data.error ?? "Unknown error");
@@ -74,7 +99,6 @@ export function WorkTogether() {
                 type="text"
                 required
                 className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/40 outline-none transition-colors focus:border-white/30 focus:bg-white/10"
-                placeholder="Your name"
               />
             </div>
             <div>
@@ -90,7 +114,6 @@ export function WorkTogether() {
                 type="email"
                 required
                 className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/40 outline-none transition-colors focus:border-white/30 focus:bg-white/10"
-                placeholder="you@example.com"
               />
             </div>
             <div>
@@ -100,14 +123,47 @@ export function WorkTogether() {
               >
                 Message
               </label>
-              <textarea
-                id="message"
-                name="message"
-                required
-                rows={4}
-                className="w-full resize-none rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/40 outline-none transition-colors focus:border-white/30 focus:bg-white/10"
-                placeholder="Hey Zach, would love to connect, let's chat in the coming week 👀"
-              />
+              <div className="relative rounded-lg border border-white/10 bg-white/5 focus-within:border-white/30">
+                {/* Ghost text overlay — shows typed text + grey autocomplete inline */}
+                <div
+                  className="pointer-events-none absolute inset-0 overflow-hidden rounded-lg px-4 py-3"
+                  aria-hidden="true"
+                >
+                  {messageValue === "" && !messageFocused ? (
+                    <div className="text-base leading-relaxed text-white/40">
+                      <TypewriterOnce
+                        text={SUGGESTED_MESSAGE}
+                        ms={45}
+                        delayMs={800}
+                        triggerOnScroll
+                      />
+                    </div>
+                  ) : (
+                    <div className="whitespace-pre-wrap break-words text-base leading-relaxed text-white">
+                      {messageValue}
+                      {showAutocomplete && (
+                        <span className="text-white/45">
+                          {SUGGESTED_MESSAGE.slice(messageValue.length)}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  rows={4}
+                  value={messageValue}
+                  onChange={(e) => setMessageValue(e.target.value)}
+                  onKeyDown={handleMessageKeyDown}
+                  onFocus={() => setMessageFocused(true)}
+                  onBlur={() => setMessageFocused(false)}
+                  className="relative z-10 w-full resize-none rounded-lg border-0 bg-transparent px-4 py-3 text-transparent caret-white outline-none focus:ring-0"
+                  style={{ WebkitTextFillColor: "transparent" }}
+                  autoComplete="off"
+                />
+              </div>
             </div>
           </div>
           <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">

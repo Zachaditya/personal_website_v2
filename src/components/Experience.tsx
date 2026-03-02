@@ -52,7 +52,7 @@ const EXPERIENCE: ResumeItem[] = [
   },
   {
     title: "Teaching Intern",
-    org: "Bercerita (IFund Education)",
+    org: "Bercerita",
     dates: "Sep 2022 - May 2023",
     description: [
       "Taught English to a class of 10 Indonesian students from underprivileged rural neighborhoods via Zoom, improving language proficiency and confidence.",

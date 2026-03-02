@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { StarField } from "@/components/StarField";
 import PageTransition from "@/components/PageTransition";
 
-const outfit = Outfit({
+const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  variable: "--font-outfit",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-ibm-plex-sans",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
 });
 
 export const metadata: Metadata = {
@@ -20,8 +26,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={outfit.variable}>
-      <body className={outfit.className}>
+    <html lang="en" className={`${ibmPlexSans.variable} ${jetbrainsMono.variable}`}>
+      <body className={jetbrainsMono.className}>
         <StarField />
         <PageTransition>
           <div style={{ position: "relative", zIndex: 1 }}>{children}</div>

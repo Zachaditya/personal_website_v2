@@ -19,7 +19,7 @@ html, body {
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 ::selection {
@@ -38,7 +38,7 @@ html {
 
 .tw-cursor {
   display: inline-block;
-  width: 4px;
+  width: 2px;
   height: 1em;
   margin-left: 2px;
   background: #ffffff;
@@ -81,11 +81,39 @@ html {
   animation: blur-in-vertical 0.8s ease-out forwards;
 }
 
+/* Animated gradient border for first project card */
+.card-gradient-border {
+  position: relative;
+  border-radius: 1rem;
+  padding: 2px;
+  background: linear-gradient(
+    90deg,
+    #26DDF9,
+    #0ACF83,
+    #A259FF,
+    #26DDF9
+  );
+  background-size: 400% 100%;
+  animation: gradient-shift 8s linear infinite;
+}
+
+.card-gradient-border-inner {
+  border-radius: calc(1rem - 2px);
+  background: #0c0e10;
+  overflow: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .pulse-dot { animation: none; }
   .tw-cursor { animation: none; }
   .animate-blur-in-vertical { animation: none; opacity: 1; filter: none; transform: none; }
+  .card-gradient-border { animation: none; background-size: 100% 100%; }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 400% 50%; }
 }
 
 /* ====== Shooting star animation ====== */
@@ -199,10 +227,14 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .shoot-star,
   .shoot-star .star,
   .shoot-star .spark,
   .shoot-payload {
     animation: none !important;
+  }
+  .shoot-star {
+    display: none;
   }
   .shoot-payload {
     opacity: 1;
