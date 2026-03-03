@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { StarField } from "@/components/StarField";
 import PageTransition from "@/components/PageTransition";
+
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -32,6 +34,7 @@ export default function RootLayout({
         <PageTransition>
           <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
         </PageTransition>
+        <Analytics />
       </body>
     </html>
   );
