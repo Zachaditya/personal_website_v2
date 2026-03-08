@@ -70,7 +70,8 @@ export function WorkTogether() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Let's Work Together!
+            I'm actively looking for Full-Stack engineering roles. Let's
+            connect!
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg">
             👾 Drop me a message, ideas or anything on your mind.

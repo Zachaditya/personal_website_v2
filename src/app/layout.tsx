@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { StarField } from "@/components/StarField";
 import PageTransition from "@/components/PageTransition";
+import { Navbar } from "@/components/Navbar";
 
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="en" className={`${ibmPlexSans.variable} ${jetbrainsMono.variable}`}>
       <body className={jetbrainsMono.className}>
         <StarField />
+        <Navbar />
         <PageTransition>
           <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
         </PageTransition>

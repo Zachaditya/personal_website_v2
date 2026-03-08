@@ -3,7 +3,15 @@
 import Image from "next/image";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
-import { ArrowDown, FileText, Github, Linkedin, Mail } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowDown,
+  Github,
+  Linkedin,
+  Mail,
+  MapPin,
+  FileText,
+} from "lucide-react";
 import TypewriterOnce from "@/components/TypewriterOnce";
 
 export function Hero() {
@@ -66,10 +74,16 @@ export function Hero() {
 
       {/* Hero content — left side, revealed by star burst */}
       <div className="shoot-payload relative z-10 w-full max-w-xl lg:max-w-[50%] pr-5 md:pr-12">
-        {/* Availability badge */}
-        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl px-4 py-2 text-xs text-white/70">
-          <span className="pulse-dot h-2 w-2 rounded-full bg-[#0ACF83]" />
-          Available for Full-Stack / Data / AI roles
+        {/* Availability + Location pills */}
+        <div className="mb-8 flex flex-wrap items-center gap-2">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl px-4 py-2 text-xs text-white/70">
+            <span className="pulse-dot h-2 w-2 rounded-full bg-[#0ACF83]" />
+            Available for Full-Stack / Data / AI roles
+          </div>
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl px-4 py-2 text-xs text-white/70">
+            <MapPin className="h-3.5 w-3.5 shrink-0" />
+            San Francisco Bay Area
+          </div>
         </div>
         <br />
 
@@ -113,24 +127,33 @@ export function Hero() {
           >
             <Mail className="h-6 w-6" />
           </a>
+          <a
+            href="/RESUME_ErnestAditya_Aetherum.pdf"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Resume"
+            className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            <FileText className="h-6 w-6" />
+          </a>
         </div>
 
         {/* CTAs */}
         <div className="mt-8 flex flex-wrap items-center gap-4">
           <a
-            href="#projects"
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/5"
+            href="https://calendly.com/zachaditya-berkeley/30min"
+            className="group inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:border-white hover:bg-white hover:text-[#010304]"
           >
-            View Projects
-            <ArrowDown className="h-4 w-4" />
+            Let&apos;s Talk
+            <ArrowRight className="h-4 w-4 opacity-0 -translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
           </a>
 
           <a
-            href="/RESUME_ErnestAditya_Aetherum.pdf"
-            className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#010304] transition-transform hover:scale-[1.02]"
+            href="#projects"
+            className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#010304] transition-all duration-300 hover:scale-[1.02] hover:bg-white/90"
           >
-            Download Resume
-            <FileText className="h-4 w-4" />
+            View Projects
+            <ArrowDown className="h-4 w-4" />
           </a>
         </div>
       </div>
