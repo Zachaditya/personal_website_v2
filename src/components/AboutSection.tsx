@@ -33,21 +33,21 @@ export function AboutSection() {
         <h2 className="mb-10 text-left text-2xl font-semibold tracking-tight text-white/70">
           About Me
         </h2>
-        <div className="flex flex-row flex-nowrap items-stretch gap-8 md:gap-10">
+        <div className="flex flex-col gap-6 md:flex-row md:items-stretch md:gap-10">
           {/* Headshot */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="relative h-96 w-72 shrink-0 overflow-hidden rounded-xl sm:h-[480px] sm:w-80"
+            className="relative mx-auto h-72 w-48 shrink-0 overflow-hidden rounded-xl md:mx-0 md:h-[480px] md:w-80"
           >
             <Image
               src="/headshot2.png"
               alt="Zach"
               fill
               className="object-cover object-top"
-              sizes="(max-width: 640px) 288px, 320px"
+              sizes="(max-width: 768px) 192px, 320px"
             />
           </motion.div>
 
@@ -57,7 +57,7 @@ export function AboutSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="flex min-w-0 flex-1 flex-col rounded-2xl border border-white/10 bg-[#0c0e10] p-8 sm:p-10"
+            className="flex min-w-0 flex-1 flex-col rounded-2xl border border-white/10 bg-[#0c0e10] p-6 md:p-10"
           >
             {/* Intro */}
             <p className="mb-1 text-base font-semibold text-white">
