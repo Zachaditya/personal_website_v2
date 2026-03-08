@@ -268,7 +268,7 @@ export function Experience() {
         {/* Download resume */}
         <div className="mt-8 flex justify-center">
           <a
-            href="/RESUME_ErnestAditya_Aetherum.pdf"
+            href="/ErnestZacharyAditya_Resume.pdf"
             className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition-colors hover:bg-white/10"
           >
             <FileText className="h-4 w-4" />

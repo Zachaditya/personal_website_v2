@@ -128,7 +128,7 @@ export function Hero() {
             <Mail className="h-6 w-6" />
           </a>
           <a
-            href="/RESUME_ErnestAditya_Aetherum.pdf"
+            href="/ErnestZacharyAditya_Resume.pdf"
             target="_blank"
             rel="noreferrer"
             aria-label="Resume"
