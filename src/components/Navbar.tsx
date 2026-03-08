@@ -16,22 +16,30 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const observers: IntersectionObserver[] = [];
+    const getActiveSection = () => {
+      const viewportMiddle = window.scrollY + window.innerHeight / 2;
+      let active: string | null = null;
+      let minDistance = Infinity;
 
-    NAV_LINKS.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSection(id);
-        },
-        { threshold: 0.3 },
-      );
-      observer.observe(el);
-      observers.push(observer);
-    });
+      for (const { id } of NAV_LINKS) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        const sectionTop = rect.top + window.scrollY;
+        const sectionMiddle = sectionTop + rect.height / 2;
+        const distance = Math.abs(viewportMiddle - sectionMiddle);
+        if (distance < minDistance) {
+          minDistance = distance;
+          active = id;
+        }
+      }
+      return active;
+    };
 
-    return () => observers.forEach((o) => o.disconnect());
+    const onScroll = () => setActiveSection(getActiveSection());
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
