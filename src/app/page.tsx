@@ -3,6 +3,7 @@ import { TechStack } from "@/components/TechStack";
 import { Experience } from "@/components/Experience";
 import { ProjectsPreview } from "@/components/ProjectsPreview";
 import { WorkTogether } from "@/components/WorkTogether";
+import { AboutSection } from "@/components/AboutSection";
 
 export default function HomePage() {
   return (
@@ -16,7 +17,7 @@ export default function HomePage() {
 
         {/* Scroll marker: entering this triggers the rotation-back animation on the fixed overlay */}
         <div id="anim-gap" />
-
+        <AboutSection />
         <WorkTogether />
       </div>
     </main>
