@@ -61,7 +61,7 @@ export function AboutSection() {
           >
             {/* Intro */}
             <p className="mb-1 text-base font-semibold text-white">
-              Hi, I&apos;m Zach 👋
+              Hello World, I&apos;m Zach 👋
             </p>
             <div className="space-y-3 text-base leading-relaxed text-white/60">
               <p>

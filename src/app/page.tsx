@@ -14,10 +14,10 @@ export default function HomePage() {
       <ProjectsPreview />
       <div className="relative z-10 mt-40">
         <Experience />
+        <AboutSection />
 
         {/* Scroll marker: entering this triggers the rotation-back animation on the fixed overlay */}
         <div id="anim-gap" />
-        <AboutSection />
         <WorkTogether />
       </div>
     </main>
