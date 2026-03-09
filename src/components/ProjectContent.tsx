@@ -2,7 +2,10 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import type { Project } from "@/lib/projects";
+import { ProjectSidebar } from "@/components/ProjectSidebar";
 
 const item = {
   hidden: { opacity: 0, y: 22 },
@@ -24,13 +27,35 @@ const container = {
 };
 
 export function ProjectContent({ project }: { project: Project }) {
-  return (
-    <motion.div
-      className="mx-auto max-w-3xl px-4 py-24"
-      variants={container}
-      initial="hidden"
-      animate="show"
-    >
+  const hasSections = !!project.sections?.length;
+  const [activeId, setActiveId] = useState(project.sections?.[0]?.id ?? "");
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    if (!hasSections) return;
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id);
+          }
+        }
+      },
+      { threshold: 0.4 },
+    );
+
+    const ids = project.sections!.map((s) => s.id);
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observerRef.current!.observe(el);
+    });
+
+    return () => observerRef.current?.disconnect();
+  }, [hasSections, project.sections]);
+
+  const header = (
+    <motion.div variants={container} initial="hidden" animate="show">
       <motion.div variants={item}>
         <Link
           href="/#projects"
@@ -82,7 +107,7 @@ export function ProjectContent({ project }: { project: Project }) {
           </motion.div>
         )}
 
-        {project.highlights?.length ? (
+        {!hasSections && project.highlights?.length ? (
           <motion.div variants={item} className="mt-8 space-y-3">
             <h2 className="text-lg font-semibold text-white">Highlights</h2>
             <ul className="list-disc space-y-2 pl-5 text-sm text-white/60">
@@ -124,5 +149,80 @@ export function ProjectContent({ project }: { project: Project }) {
         </motion.div>
       </div>
     </motion.div>
+  );
+
+  if (!hasSections) {
+    return (
+      <div className="flex w-full justify-center">
+        <div className="w-full max-w-3xl px-4 py-24">{header}</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex w-full justify-center">
+      <div className="flex max-w-6xl w-full gap-16 lg:gap-24">
+        <ProjectSidebar sections={project.sections!} activeId={activeId} />
+
+        <div className="flex-1 min-w-0 max-w-3xl pl-8 pr-4 py-24 lg:pl-12">
+        {header}
+
+        {project.sections!.map((section) => (
+          <section
+            key={section.id}
+            id={section.id}
+            className="mt-16 scroll-mt-24"
+          >
+            <h2 className="text-lg font-semibold text-white">
+              {section.title}
+            </h2>
+
+            {section.video ? (
+              <div className="mt-4 overflow-hidden rounded-xl border border-white/10">
+                <video
+                  src={`/${section.video}`}
+                  controls
+                  playsInline
+                  className="w-full"
+                />
+              </div>
+            ) : null}
+
+            {section.screenshots?.length ? (
+              <div className="mt-4 flex flex-col gap-4">
+                {section.screenshots.map((src) => (
+                  <div
+                    key={src}
+                    className="relative aspect-video w-full overflow-hidden rounded-xl border border-white/10"
+                  >
+                    <Image
+                      src={`/${src}`}
+                      alt={`${section.title} screenshot`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 672px"
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : null}
+
+            <p className="mt-4 text-sm leading-relaxed text-white/60">
+              {section.description}
+            </p>
+
+            {section.features?.length ? (
+              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-white/60">
+                {section.features.map((f, i) => (
+                  <li key={i}>{f}</li>
+                ))}
+              </ul>
+            ) : null}
+          </section>
+        ))}
+        </div>
+      </div>
+    </div>
   );
 }

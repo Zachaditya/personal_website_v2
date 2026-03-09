@@ -1,3 +1,12 @@
+export type ProjectSection = {
+  id: string;
+  title: string;
+  description: string;
+  screenshots?: string[]; // paths relative to /public
+  video?: string; // path relative to /public
+  features?: string[];
+};
+
 export type Project = {
   slug: string;
   title: string;
@@ -11,13 +20,14 @@ export type Project = {
   brewing?: boolean;
   liveUrl?: string;
   preview?: string; // path in public/previews, e.g. "portfolio_dashboard-preview.png"
+  sections?: ProjectSection[];
 };
 
 export const PROJECTS: Project[] = [
   {
     slug: "portfolio_recommender",
     title: "Portfolio Dashboard",
-    date: "February 2026",
+    date: "March 2026",
     tags: ["Dashboard", "Data Visualization", "Agentic workflows", "Next.js", "FastAPI",  "UI/UX", "LLM"],
     short:
       "Built an Informative portfolio dashboard to visualize the user's portfolio and performance and provide actionable insights to optimize the portfolio.",
@@ -33,6 +43,63 @@ export const PROJECTS: Project[] = [
     repoUrl: "https://github.com/Zachaditya/personal_finance_dashboard",
     liveUrl: "https://personal-finance-dashboard-three-brown.vercel.app",
     preview: "portfolio_dashboard-preview.png",
+    sections: [
+      {
+        id: "onboarding",
+        title: "Onboarding",
+        description:
+          "A 7-step onboarding flow with a quiz that captures everything needed to build a personalized financial profile — income, savings, credit score, debt breakdown, and existing portfolio holdings. The flow branches intelligently: users without a portfolio skip the asset selection steps entirely.",
+        features: [
+          "Annual income, savings, and credit score capture",
+          "Debt breakdown by category (Student Loans, Mortgage, Auto, Credit Cards)",
+          "Portfolio asset selection from a universe of 20 assets across Stocks, Bonds, Crypto, and Cash",
+          "Branching flow — skips asset steps if user has no existing portfolio",
+        ],
+        video: "personal_finance/onboarding-demo.mov",
+      },
+      {
+        id: "portfolio-health",
+        title: "Portfolio Health",
+        description:
+          "A holistic financial health dashboard that distills complex financial data into a single actionable score, paired with AI-generated insights and a milestone calculator to visualize long-term compounding.",
+        features: [
+          "Health Score card (0–1000 scale: Poor / Fair / Good / Excellent)",
+          "Net Worth and Total Debt summary cards with category breakdown",
+          "Custom SVG arc gauge for Credit Score (300–850)",
+          "Asset Allocation breakdown chart",
+          "AI-generated health insights, portfolio insights, and action items",
+          "Compounding milestone calculator with 1–40 year interactive slider",
+        ],
+        screenshots: ["personal_finance/screenshot1.png"],
+      },
+      {
+        id: "portfolio-dashboard",
+        title: "Portfolio Dashboard",
+        description:
+          "Institutional-grade portfolio analytics accessible to any investor. Performance is benchmarked against the S&P 500 and Bitcoin, and over 40 financial metrics are surfaced across 9 accordion sections — from Sharpe ratio to tail risk.",
+        features: [
+          "Net worth hero card and asset class breakdown",
+          "Performance chart benchmarked against S&P 500 and Bitcoin",
+          "Stacked individual asset chart and allocation pie/donut",
+          "40+ financial ratios across 9 accordion sections: Return Quality, Risk-Adjusted Returns, Drawdown & Downside Risk, Market Sensitivity, Tail Risk, Concentration, Allocation Breakdown, Volatility, and Practical metrics",
+        ],
+        screenshots: [
+          "personal_finance/screenshot2.png",
+        ],
+      },
+      {
+        id: "ai-advisor",
+        title: "AI Advisor",
+        description:
+          "An AI financial advisor with two modes: a multi-turn chat interface grounded in the user's full financial profile, and a credit card recommendation engine that scores and ranks 15 cards by fit.",
+        features: [
+          "Multi-turn AI chat grounded in full financial profile context",
+          "4 starter prompt chips for common financial questions",
+          "Credit card recommendation engine with match scores (0–100) and approval likelihood",
+          "15-card catalog with category badges, annual fee indicators, and expandable reasoning",
+        ],
+      },
+    ],
   },
   {
     slug: "hm-shop",
