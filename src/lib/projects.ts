@@ -32,7 +32,6 @@ export const PROJECTS: Project[] = [
     ],
     repoUrl: "https://github.com/Zachaditya/personal_finance_dashboard",
     liveUrl: "https://personal-finance-dashboard-three-brown.vercel.app",
-    brewing: true,
     preview: "portfolio_dashboard-preview.png",
   },
   {
